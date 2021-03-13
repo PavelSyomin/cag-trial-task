@@ -5,7 +5,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 -->
 <dbmodel pgmodeler-ver="0.9.2" last-position="0,0" last-zoom="1" max-obj-count="6"
 	 default-schema="public" default-owner="postgres">
-<database name="smp_aid" is-template="false" allow-conns="true">
+<database name="smb_support" is-template="false" allow-conns="true">
 </database>
 
 <schema name="public" layer="0" fill-color="#e1e1e1" sql-disabled="true">
@@ -32,10 +32,10 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<enumeration values="rouble,sq_meter,hour,percent,unit"/>
 </usertype>
 
-<table name="aid_forms" layer="0" collapse-mode="2" max-obj-count="2">
+<table name="support_forms" layer="0" collapse-mode="2" max-obj-count="2">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<appended-sql><![CDATA[insert into aid_forms (code, name) values
+	<appended-sql><![CDATA[insert into support_forms (code, name) values
 	('0100', 'Финансовая поддержка'),
 	('0200', 'Информационная поддержка'),
 	('0300', 'Образовательная поддержка'),
@@ -49,12 +49,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="name" not-null="true">
 		<type name="varchar" length="200"/>
 	</column>
-	<constraint name="aid_kinds_pk" type="pk-constr" table="public.aid_forms">
+	<constraint name="support_forms_pk" type="pk-constr" table="public.support_forms">
 		<columns names="code" ref-type="src-columns"/>
 	</constraint>
 </table>
 
-<table name="gov_bodies" layer="0" collapse-mode="2" max-obj-count="2">
+<table name="providers" layer="0" collapse-mode="2" max-obj-count="2">
 	<schema name="public"/>
 	<role name="postgres"/>
 	<position x="20" y="440"/>
@@ -64,7 +64,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="name" not-null="true">
 		<type name="varchar" length="1000"/>
 	</column>
-	<constraint name="gov_bodies_pk" type="pk-constr" table="public.gov_bodies">
+	<constraint name="providers_pk" type="pk-constr" table="public.providers">
 		<columns names="tin" ref-type="src-columns"/>
 	</constraint>
 </table>
@@ -81,7 +81,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<enumeration values="micro,small,medium,none"/>
 </usertype>
 
-<table name="aid" layer="0" collapse-mode="2" max-obj-count="16">
+<table name="support_measures" layer="0" collapse-mode="2" max-obj-count="16">
 	<schema name="public"/>
 	<role name="postgres"/>
 	<position x="460" y="20"/>
@@ -115,28 +115,32 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="receiver_category" not-null="true">
 		<type name="public.receiver_categories" length="0"/>
 	</column>
-	<constraint name="aids_pk" type="pk-constr" table="public.aid">
+	<constraint name="support_measures_pk" type="pk-constr" table="public.support_measures">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 
 	<customidxs object-type="column">
-		<object name="gov_body" index="11"/>
+		<object name="form" index="12"/>
+		<object name="kind" index="13"/>
+		<object name="provider" index="11"/>
 		<object name="receiver" index="10"/>
 	</customidxs>
 
 	<customidxs object-type="constraint">
-		<object name="gov_bodies_fk" index="2"/>
+		<object name="providers_fk" index="4"/>
 		<object name="receivers_fk" index="1"/>
+		<object name="support_forms_fk" index="2"/>
+		<object name="support_kinds_fk" index="3"/>
 	</customidxs>
 </table>
 
 <relationship name="gov_bodies_has_many_aids" type="rel1n" layer="0"
-	 src-col-pattern="gov_body"
+	 src-col-pattern="provider"
 	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
 	 src-fk-pattern="{st}_fk"
 	 custom-color="#ac54a5"
-	 src-table="public.gov_bodies"
-	 dst-table="public.aid"
+	 src-table="public.providers"
+	 dst-table="public.support_measures"
 	 src-required="false" dst-required="false"/>
 
 <relationship name="receivers_has_many_aids" type="rel1n" layer="0"
@@ -145,52 +149,16 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 src-fk-pattern="{st}_fk"
 	 custom-color="#42844d"
 	 src-table="public.receivers"
-	 dst-table="public.aid"
+	 dst-table="public.support_measures"
 	 src-required="false" dst-required="false">
 	<label ref-type="name-label">
 		<position x="-4.01094" y="-31.0374"/>
 	</label>
 </relationship>
 
-<table name="aid_kinds" layer="0" collapse-mode="2" max-obj-count="2">
+<table name="support_kinds" layer="0" collapse-mode="2" max-obj-count="2">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<appended-sql><![CDATA[insert into aid_kinds (code, name) values
-	('0101', 'Инвестиции в капитал'),
-	('0102', 'Предоставление гарантий и поручительств'),
-	('0103', 'Предоставление субсидий и грантов'),
-	('0104', 'Предоставление финансирования на возвратной основе'),
-	('0201', 'Визовая поддержка'),
-	('0202', 'Изготовление печатной продукции'),
-	('0203', 'Лингвистическое сопровождение '),
-	('0204', 'Мероприятия, направленные на популяризацию предпринимательства и начало собственного дела'),
-	('0205', 'Оказание почтово-секретарских услуг'),
-	('0206', 'Предоставление информации'),
-	('0301', 'Образовательные программы и модули'),
-	('0302', 'Организация и проведение семинаров, тренингов, конференций, форумов, круглых столов, бизнес-игр'),
-	('0303', 'Повышение квалификации'),
-	('0401', 'Иные консультационные услуги'),
-	('0402', 'Кадровое консультирование'),
-	('0403', 'Комплексные консультационные услуги'),
-	('0404', 'Консультационные услуги в области развития бизнеса, маркетинга, сбыта и закупок'),
-	('0405', 'Консультационные услуги по вопросам информационной поддержки деятельности МСП'),
-	('0406', 'Консультационные услуги по мерам государственной поддержки'),
-	('0407', 'Консультационные услуги по организации сертификации, патентно-лицензионное сопровождение деятельности'),
-	('0408', 'Консультация в области инноваций'),
-	('0409', 'Консультация по вопросам имущества'),
-	('0410', 'Организация участия в выставочно-ярмарочных и иных мероприятиях'),
-	('0411', 'Организация участия и \ или проведение  бизнес-миссии'),
-	('0412', 'Правовая консультация'),
-	('0413', 'Разработка дизайна, аудио, видео материалов, презентаций'),
-	('0414', 'Финансовое консультирование'),
-	('0415', 'Консультационные услуги по вопросам образовательной поддержки'),
-	('0501', 'Передача  в аренду имущества'),
-	('0502', 'Передача во владение имущества'),
-	('0503', 'Предпродажная подготовка имущества'),
-	('0601', 'Научно-исследовательские работы и опытно-конструкторские работы'),
-	('0602', 'Экспертиза'),
-	('0603', 'Производственные работы');
-]]></appended-sql>
 	<position x="1000" y="260"/>
 	<column name="code" not-null="true">
 		<type name="char" length="4"/>
@@ -198,7 +166,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="name" not-null="true">
 		<type name="varchar" length="400"/>
 	</column>
-	<constraint name="aid_kinds_pk_1" type="pk-constr" table="public.aid_kinds">
+	<constraint name="support_kinds_pk" type="pk-constr" table="public.support_kinds">
 		<columns names="code" ref-type="src-columns"/>
 	</constraint>
 </table>
@@ -208,8 +176,8 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
 	 src-fk-pattern="{st}_fk"
 	 custom-color="#820171"
-	 src-table="public.aid_forms"
-	 dst-table="public.aid"
+	 src-table="public.support_forms"
+	 dst-table="public.support_measures"
 	 src-required="false" dst-required="false"/>
 
 <relationship name="aid_kinds_has_many_aid" type="rel1n" layer="0"
@@ -217,8 +185,8 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
 	 src-fk-pattern="{st}_fk"
 	 custom-color="#cfd17c"
-	 src-table="public.aid_kinds"
-	 dst-table="public.aid"
+	 src-table="public.support_kinds"
+	 dst-table="public.support_measures"
 	 src-required="false" dst-required="false"/>
 
 </dbmodel>
