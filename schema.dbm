@@ -36,6 +36,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<schema name="public"/>
 	<role name="postgres"/>
 	<appended-sql><![CDATA[insert into support_forms (code, name) values
+	('0000', 'Нет данных'),
 	('0100', 'Финансовая поддержка'),
 	('0200', 'Информационная поддержка'),
 	('0300', 'Образовательная поддержка'),
@@ -81,7 +82,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<enumeration values="micro,small,medium,none"/>
 </usertype>
 
-<table name="support_measures" layer="0" collapse-mode="2" max-obj-count="16">
+<table name="support_measures" layer="0" collapse-mode="2" max-obj-count="19">
 	<schema name="public"/>
 	<role name="postgres"/>
 	<position x="460" y="20"/>
@@ -115,15 +116,21 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="receiver_category" not-null="true">
 		<type name="public.receiver_categories" length="0"/>
 	</column>
+	<column name="correct">
+		<type name="bool" length="0"/>
+	</column>
+	<column name="source_file">
+		<type name="varchar" length="100"/>
+	</column>
 	<constraint name="support_measures_pk" type="pk-constr" table="public.support_measures">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 
 	<customidxs object-type="column">
-		<object name="form" index="12"/>
-		<object name="kind" index="13"/>
-		<object name="provider" index="11"/>
-		<object name="receiver" index="10"/>
+		<object name="form" index="14"/>
+		<object name="kind" index="15"/>
+		<object name="provider" index="13"/>
+		<object name="receiver" index="12"/>
 	</customidxs>
 
 	<customidxs object-type="constraint">
