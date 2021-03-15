@@ -4,6 +4,7 @@ import xmlschema
 import os
 from datetime import date
 from bs4 import BeautifulSoup
+from time import time
 
 
 # A function to convert string date representation to Python date object.
@@ -325,6 +326,7 @@ def process_dir(path, start=0, end=10):
     total_errors = 0
 
     # Iterate over files.
+    i = 0
     for i, file in enumerate(files[start:end]):
         # Non-xml files are not processed.
         if ".xml" not in file:
@@ -382,4 +384,7 @@ def process_dir(path, start=0, end=10):
 
 # All files are not valid: 'ВидСуб' attribute not allowed for element.
 # print(validate("data"))
-process_dir("data")
+start = time()
+process_dir("data", 0, 200)
+end = time()
+print("Time elapsed:", end - start, "seconds.")

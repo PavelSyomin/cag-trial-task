@@ -14,12 +14,15 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="receivers" layer="0" collapse-mode="2" max-obj-count="2">
 	<schema name="public"/>
 	<role name="postgres"/>
+	<comment><![CDATA[Получатели поддержки (как физические, так и юридические лица)]]></comment>
 	<position x="20" y="260"/>
 	<column name="tin" not-null="true">
 		<type name="varchar" length="12"/>
+		<comment><![CDATA[ИНН]]></comment>
 	</column>
 	<column name="name" not-null="true">
 		<type name="varchar" length="1000"/>
+		<comment><![CDATA[ФИО (для физических лиц) или наименование (для юридических лиц)]]></comment>
 	</column>
 	<constraint name="receivers_pk" type="pk-constr" table="public.receivers">
 		<columns names="tin" ref-type="src-columns"/>
@@ -35,6 +38,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="support_forms" layer="0" collapse-mode="2" max-obj-count="2">
 	<schema name="public"/>
 	<role name="postgres"/>
+	<comment><![CDATA[Коды и названия форм поддержки]]></comment>
 	<appended-sql><![CDATA[insert into support_forms (code, name) values
 	('0000', 'Нет данных'),
 	('0100', 'Финансовая поддержка'),
@@ -46,9 +50,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<position x="1000" y="40"/>
 	<column name="code" not-null="true">
 		<type name="char" length="4"/>
+		<comment><![CDATA[Код]]></comment>
 	</column>
 	<column name="name" not-null="true">
 		<type name="varchar" length="200"/>
+		<comment><![CDATA[Название]]></comment>
 	</column>
 	<constraint name="support_forms_pk" type="pk-constr" table="public.support_forms">
 		<columns names="code" ref-type="src-columns"/>
@@ -58,12 +64,15 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="providers" layer="0" collapse-mode="2" max-obj-count="2">
 	<schema name="public"/>
 	<role name="postgres"/>
+	<comment><![CDATA[Органы, предоставившие поддержку]]></comment>
 	<position x="20" y="440"/>
 	<column name="tin" not-null="true">
 		<type name="varchar" length="10"/>
+		<comment><![CDATA[ИНН]]></comment>
 	</column>
 	<column name="name" not-null="true">
 		<type name="varchar" length="1000"/>
+		<comment><![CDATA[Наименование органа власти]]></comment>
 	</column>
 	<constraint name="providers_pk" type="pk-constr" table="public.providers">
 		<columns names="tin" ref-type="src-columns"/>
@@ -85,42 +94,54 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="support_measures" layer="0" collapse-mode="2" max-obj-count="19">
 	<schema name="public"/>
 	<role name="postgres"/>
+	<comment><![CDATA[Меры поддержки]]></comment>
 	<position x="460" y="20"/>
 	<column name="id" not-null="true">
 		<type name="serial" length="0"/>
 	</column>
 	<column name="period" not-null="true">
 		<type name="date" length="0"/>
+		<comment><![CDATA[Срок оказания поддержки]]></comment>
 	</column>
 	<column name="start_date" not-null="true">
 		<type name="date" length="0"/>
+		<comment><![CDATA[Дата принятия решения о предоставлении поддержки]]></comment>
 	</column>
 	<column name="end_date">
 		<type name="date" length="0"/>
+		<comment><![CDATA[Дата принятия решения о прекращении оказания поддержки]]></comment>
 	</column>
 	<column name="size" not-null="true">
 		<type name="numeric" length="11" precision="2"/>
+		<comment><![CDATA[Размер поддержки]]></comment>
 	</column>
 	<column name="size_unit" not-null="true">
 		<type name="public.size_unit" length="0"/>
+		<comment><![CDATA[Единица измерения поддержки]]></comment>
 	</column>
 	<column name="violation" not-null="true">
 		<type name="bool" length="0"/>
+		<comment><![CDATA[Информация о наличии нарушения порядка и условий предоставления поддержки]]></comment>
 	</column>
 	<column name="misuse" not-null="true">
 		<type name="bool" length="0"/>
+		<comment><![CDATA[Информация о нецелевом использовании средств поддержки]]></comment>
 	</column>
 	<column name="receiver_kind" not-null="true">
 		<type name="public.receiver_kinds" length="0"/>
+		<comment><![CDATA[Вид получателя поддержки на дату принятия решения о предоставлении поддержки]]></comment>
 	</column>
 	<column name="receiver_category" not-null="true">
 		<type name="public.receiver_categories" length="0"/>
+		<comment><![CDATA[Категория субъекта малого и среднего предпринимательства на дату принятия решения о предоставлении поддержки]]></comment>
 	</column>
 	<column name="source_file">
 		<type name="varchar" length="100"/>
+		<comment><![CDATA[Название файла, из которого взята запись]]></comment>
 	</column>
 	<column name="doc_id">
 		<type name="varchar" length="60"/>
+		<comment><![CDATA[Идентификатор документа (ИдДок) в файле]]></comment>
 	</column>
 	<constraint name="support_measures_pk" type="pk-constr" table="public.support_measures">
 		<columns names="id" ref-type="src-columns"/>
@@ -166,12 +187,15 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="support_kinds" layer="0" collapse-mode="2" max-obj-count="2">
 	<schema name="public"/>
 	<role name="postgres"/>
+	<comment><![CDATA[Коды и названия видов поддержки]]></comment>
 	<position x="1000" y="260"/>
 	<column name="code" not-null="true">
 		<type name="char" length="4"/>
+		<comment><![CDATA[Код]]></comment>
 	</column>
 	<column name="name" not-null="true">
 		<type name="varchar" length="400"/>
+		<comment><![CDATA[Название]]></comment>
 	</column>
 	<constraint name="support_kinds_pk" type="pk-constr" table="public.support_kinds">
 		<columns names="code" ref-type="src-columns"/>
