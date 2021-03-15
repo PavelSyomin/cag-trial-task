@@ -116,11 +116,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="receiver_category" not-null="true">
 		<type name="public.receiver_categories" length="0"/>
 	</column>
-	<column name="correct">
-		<type name="bool" length="0"/>
-	</column>
 	<column name="source_file">
 		<type name="varchar" length="100"/>
+	</column>
+	<column name="doc_id">
+		<type name="varchar" length="60"/>
 	</column>
 	<constraint name="support_measures_pk" type="pk-constr" table="public.support_measures">
 		<columns names="id" ref-type="src-columns"/>

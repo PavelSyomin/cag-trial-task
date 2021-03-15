@@ -265,7 +265,7 @@ def process_file(file):
                                          size, unit, violation, misuse,
                                          receiver_kind, receiver_category,
                                          receiver_tin, provider_tin,
-                                         kind_code, form))
+                                         kind_code, form, file, doc_id))
             # Iterate over sizes.
             for item in sizes:
                 try:
@@ -287,7 +287,7 @@ def process_file(file):
                                          size, unit, violation, misuse,
                                          receiver_kind, receiver_category,
                                          receiver_tin, provider_tin,
-                                         kind_code, form))
+                                         kind_code, form, file, doc_id))
 
     return data, error
 
@@ -354,7 +354,7 @@ def process_dir(path, start=0, end=10):
         sql = {"receivers": "INSERT INTO receivers VALUES %s",
                "providers": "INSERT INTO providers VALUES %s",
                "kinds": "INSERT INTO support_kinds VALUES %s",
-               "measures": "INSERT INTO support_measures (period, start_date, end_date, size, size_unit, violation, misuse, receiver_kind, receiver_category, receiver, provider, kind, form) VALUES %s"}
+               "measures": "INSERT INTO support_measures (period, start_date, end_date, size, size_unit, violation, misuse, receiver_kind, receiver_category, receiver, provider, kind, form, source_file, doc_id) VALUES %s"}
         # Try to insert data.
         try:
             pe.execute_values(cursor, sql["receivers"], list(r.items()), template=None, page_size=100)
