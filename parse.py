@@ -383,4 +383,4 @@ def process_dir(path, start=0, end=10):
 
 # All files are not valid: 'ВидСуб' attribute not allowed for element.
 # print(validate("data"))
-process_dir("data", 200, 400)
+process_dir("data", 0, 200)
